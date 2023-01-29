@@ -1,0 +1,258 @@
+import collections
+import math
+############################################################
+# Problem 3a
+def findAlphabeticallyLastWord(text):
+    texts = 'cat dog name other'
+    """
+    Given a string |text|, return the word in |text| that comes last
+    alphabetically (that is, the word that would appear last in a dictionary).
+    A word is defined by a maximal sequence of characters without whitespaces.
+    You might find max() useful.
+    """
+    # BEGIN_YOUR_CODE 
+    #raise Exception("Not implemented yet")
+    words = texts.split(' ')
+    def CompareWords(word1,word2):
+        word1ascii = [ord(ch) for ch in word1]
+        word2ascii = [ord(ch) for ch in word2]
+        wordLenMin = min(len(word1ascii), len(word2ascii))
+        ichar = 0
+        while ichar < wordLenMin:
+            #print("ichar enter", ichar)
+            #if first letter of first word is less then 
+            #first letter of second word word1 comes before word2
+            if word1ascii[ichar] < word2ascii[ichar]:
+                return 1
+            if word1ascii[ichar] == word2ascii[ichar]:
+                #if made it to the end of shortest word and every char the same
+                if (ichar == (wordLenMin -1)):
+                    #if at end of shortest word see if first word is shorter then the 2nd
+                    if (len(word1ascii)< (len(word2ascii))):
+                        #print("len 1",len(word1ascii))
+                        #print("len2", len(word2ascii))
+                        #print("last if")
+                        return 1
+                    elif (len(word1ascii) == (len(word2ascii))):
+                        return 1
+                    else:
+                        return 0
+                ichar = ichar +1
+                #print("ichar ==", ichar)
+            else:
+                return 0
+    i= 0
+    while i < (len(words)-1):
+        #print("begin words", words)
+        compare = CompareWords(words[i],words[i+1])
+        #if compare true then word1 [i] is before word2 [i+1]
+        if compare == 1:
+            i = i+1
+        else:
+            #swap postions
+            words[i], words[i+1] = words[i+1], words[i]
+            i = 0
+
+    return(words[(len(words)-1)])
+
+    # END_YOUR_CODE
+############################################################
+# Problem 3b
+def euclideanDistance(loc1, loc2):
+    """
+    Return the Euclidean distance between two locations, where each location
+    is a pair of numbers (e.g., loc1: (3, 5), loc2: (4,6)).
+    Hint: considering doing the math computation over a list comprehension     
+    """
+    # BEGIN_YOUR_CODE
+
+    a = ((loc1[0]-loc2[0])**2)
+    b = ((loc1[1]-loc2[1])**2)
+    ans = ((a+b)**(0.5))
+    return ans
+    #raise Exception("Not implemented yet")
+    # END_YOUR_CODE
+############################################################
+# Problem 3c
+def sparseVectorDotProduct(v1, v2):
+    """
+    Given two sparse vectors |v1| and |v2|, each represented as 
+    collection.defaultdict(float), return
+    their dot product.
+    You might find it useful to iterate through the dictionary keys.
+    This function will be useful later for linear classifiers.
+    """
+    # BEGIN_YOUR_CODE 
+    allkeys1 = list(v1.keys())
+    allkeys2 = list(v2.keys())
+    size = len(v1)-1
+    sum = 0
+    for i in range(0, size):
+        key1 = allkeys1[i]
+        key2 = allkeys2[i]
+        if key1 == key2:
+            value1 = v1.get(key1)
+            value2 = v2.get(key2)
+            sum = sum + (value1*value2)
+    return sum
+    #raise Exception("Not implemented yet")
+    # END_YOUR_CODE
+sparseVectorDotProduct()
+############################################################
+# Problem 3d
+def incrementSparseVector(v1, scale, v2):
+    """
+    Given two sparse vectors |v1| and |v2|, perform v1 += scale * v2.
+    This function will be useful later for linear classifiers.
+    """
+    # BEGIN_YOUR_CODE 
+    for x in range(0, (len(v1))):
+        v1[x] += scale*v2[x] 
+    return v1
+    #raise Exception("Not implemented yet")
+    # END_YOUR_CODE
+############################################################
+# Problem 3e
+def findSingletonWords(text):
+    text = " here is a words some words"
+
+    
+    """
+    Splits the string |text| by whitespace and returns the set of words that
+    occur exactly once.
+    You might find it useful to use collections.defaultdict(int) to count before 
+    returning the correct set
+    """
+    # BEGIN_YOUR_CODE 
+    words = text.split()
+    store = []
+    for i in range(0, len(words)):
+        for n in range(0,len(words)):
+        #check if words match and not to themselves
+            if ((words[i] == words[n]) & (i != n)):
+            #store index where this occurs
+                store.append(i)
+
+    for x in range(0,len(store)):
+    #replace all repeated words with 0
+        words[(store[x])] = 0
+    #remove all zeros
+    while 0 in words:
+        words.remove(0)
+    return(words)
+    #raise Exception("Not implemented yet")
+    # END_YOUR_CODE
+############################################################
+# Problem 3f
+def computeLongestPalindromeLength(text):
+    """
+    A palindrome is a string that is equal to its reverse (e.g., 'ana').
+    Compute the length of the longest palindrome that can be obtained by deleting
+    letters from |text|.
+    For example: the longest palindrome in 'animal' is 'ama'.
+    Your algorithm should run in O(len(text)^2) time.
+    You should first define a recurrence before you start coding.
+    """
+    # BEGIN_YOUR_CODE 
+     
+    def Length(first,last):
+            ans = abs(last - first)+1
+            return ans
+
+    def repeatFirst(word,first,last):
+        store = [0]
+        for i in range(first,(last+1)):
+            if (word[first] == word[i]):
+                store.append(i)
+            else:
+                store.append(0)
+        if ((max(store)) == first):
+            return 0
+        else:
+            return(max(store))
+    def repeatLast(word,first,last):
+        store = []
+        for i in range(first,(last+1)):
+            #print("i",i)
+            #print("word[last]", word[last])
+            #print("word[last", word[i])
+            if (word[last] == word[i]):
+                store.append(i)
+            else:
+                store.append((last+2))
+        #print(store)
+        if ((min(store)) == last):
+            return 0
+        else:
+            return(min(store))
+        
+
+    def Longest(word,first,last,count):
+            if (word[first]==word[last]):
+                lenWord = Length(first,last)
+                first = first +1
+                last = last -1
+                count = count +1
+                #print("first", first)
+                #print("last", last)
+                #print("count", count)
+                if (lenWord == 2):
+                    #print("in 2")
+                    if (word[first]== word[last]):
+                        #print("in 2 and ==")
+                        return (2*count)
+                    else:
+                        return ((2*count)+1)
+                #print("first", first)
+                #print("last", last)
+                elif (lenWord==3)&(word[first]==word[last]):
+                    return ((2*count)+1)
+                else:
+                    lenWord = Length(first,last)
+                    #newWord = word[first:(last+1)]
+                    #print("first", first)
+                    #print("last", last)
+                    #print("above longest")
+                    long = Longest(word,first,last,count)
+                    return long
+            else:
+                #print("else 66")
+                #print("first", first)
+                #print("last", last)
+                #print("count", count)
+                if ((repeatFirst(word,first,last))>0):
+                    last = repeatFirst(word,first,last)
+                    #first = repeatFirst(word,first,last)
+                    #print("count 65",count)
+                    #print("repeatFirst", "w ", word," f ", first, " l ",last)
+                    long = Longest(word,first,last,count)
+                    return long
+                elif((repeatLast(word,first,last))>0):
+                    #print("repeatLast", "w ", word," f ", first, " l ",last)
+                    #last = repeatLast(word,first,last)
+                    first = repeatLast(word,first,last)
+                    #print("count",count)
+                    long = Longest(word,first,last,count)
+                    return long
+                else:
+                    #print("in else 77")
+                    #print("f ", first, "l ", last)
+                    first = first +1
+                    last = last -1
+                    lenWord = Length(first,last)
+                    #print("len ", lenWord)
+                    if(lenWord == 1):
+                        return ((2*count)+1)
+                    if (lenWord == 2):
+                        return ((2*count)+1)
+                    elif (lenWord == 3):
+                        return((2*count)+1)
+                    else:
+                        long = Longest(word,first,last,count)
+                        return long
+    first = 0
+    last = len(text) -1
+    count = 0
+    return (Longest(text,first,last,count))
+    
+    # END_YOUR_CODE
