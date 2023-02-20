@@ -3,7 +3,7 @@ import math
 ############################################################
 # Problem 3a
 def findAlphabeticallyLastWord(text):
-    texts = 'cat dog name other'
+    
     """
     Given a string |text|, return the word in |text| that comes last
     alphabetically (that is, the word that would appear last in a dictionary).
@@ -11,49 +11,10 @@ def findAlphabeticallyLastWord(text):
     You might find max() useful.
     """
     # BEGIN_YOUR_CODE 
-    #raise Exception("Not implemented yet")
-    words = texts.split(' ')
-    def CompareWords(word1,word2):
-        word1ascii = [ord(ch) for ch in word1]
-        word2ascii = [ord(ch) for ch in word2]
-        wordLenMin = min(len(word1ascii), len(word2ascii))
-        ichar = 0
-        while ichar < wordLenMin:
-            #print("ichar enter", ichar)
-            #if first letter of first word is less then 
-            #first letter of second word word1 comes before word2
-            if word1ascii[ichar] < word2ascii[ichar]:
-                return 1
-            if word1ascii[ichar] == word2ascii[ichar]:
-                #if made it to the end of shortest word and every char the same
-                if (ichar == (wordLenMin -1)):
-                    #if at end of shortest word see if first word is shorter then the 2nd
-                    if (len(word1ascii)< (len(word2ascii))):
-                        #print("len 1",len(word1ascii))
-                        #print("len2", len(word2ascii))
-                        #print("last if")
-                        return 1
-                    elif (len(word1ascii) == (len(word2ascii))):
-                        return 1
-                    else:
-                        return 0
-                ichar = ichar +1
-                #print("ichar ==", ichar)
-            else:
-                return 0
-    i= 0
-    while i < (len(words)-1):
-        #print("begin words", words)
-        compare = CompareWords(words[i],words[i+1])
-        #if compare true then word1 [i] is before word2 [i+1]
-        if compare == 1:
-            i = i+1
-        else:
-            #swap postions
-            words[i], words[i+1] = words[i+1], words[i]
-            i = 0
-
-    return(words[(len(words)-1)])
+    words = text.split(' ')
+    words.sort()
+    #print(words)
+    return words[(len(words)-1)]
 
     # END_YOUR_CODE
 ############################################################
@@ -83,21 +44,35 @@ def sparseVectorDotProduct(v1, v2):
     This function will be useful later for linear classifiers.
     """
     # BEGIN_YOUR_CODE 
-    allkeys1 = list(v1.keys())
-    allkeys2 = list(v2.keys())
-    size = len(v1)-1
+    #allkeys1 = list(v1.keys())
+    #allkeys2 = list(v2.keys())
+    """
+    maxkeys1 = max(allkeys1)
+    maxkeys2 = max(allkeys2)
+    lastindex = min(maxkeys1,maxkeys2)
+    print("lastindex", lastindex)
+    print("allkeys1",allkeys1)
+    print("allkeys2",allkeys2)
+    """
+    """
+    size = len(v2)-1
     sum = 0
-    for i in range(0, size):
+    for i in range(0, (size)):
+        print(i)
+        #get all the keys from the dict
         key1 = allkeys1[i]
         key2 = allkeys2[i]
+        #if value at same postition then multiply
         if key1 == key2:
             value1 = v1.get(key1)
             value2 = v2.get(key2)
+            #print("v1*v2 ", (value1*value2))
             sum = sum + (value1*value2)
-    return sum
+    #return sum"""
+    return sum((v1[x]*(v2[x])) for x in v1.keys())
     #raise Exception("Not implemented yet")
     # END_YOUR_CODE
-sparseVectorDotProduct()
+#sparseVectorDotProduct()
 ############################################################
 # Problem 3d
 def incrementSparseVector(v1, scale, v2):
@@ -106,15 +81,25 @@ def incrementSparseVector(v1, scale, v2):
     This function will be useful later for linear classifiers.
     """
     # BEGIN_YOUR_CODE 
-    for x in range(0, (len(v1))):
-        v1[x] += scale*v2[x] 
+    allkeys1 = list(v1.keys())
+    allkeys2 = list(v2.keys())
+    size = len(v1)-1
+    for i in range(0, (size+1)):
+        key1 = allkeys1[i]
+        key2 = allkeys2[i]
+        if key1 == key2:
+            value1 = v1.get(key1)
+            value2 = v2.get(key2)
+            #print("i ", i, "v1",value1," v2 ", value2)
+            v1[i] = value1 + (value2*scale)
+        #elif :
+          #  v1[i] = value2 * scale
     return v1
     #raise Exception("Not implemented yet")
     # END_YOUR_CODE
 ############################################################
 # Problem 3e
 def findSingletonWords(text):
-    text = " here is a words some words"
 
     
     """
@@ -124,7 +109,17 @@ def findSingletonWords(text):
     returning the correct set
     """
     # BEGIN_YOUR_CODE 
-    words = text.split()
+    from collections import defaultdict
+    words = text.split(' ')
+    words = text.split(' ')
+    s = words
+    d = defaultdict(int)
+    for k in s:
+        d[k] += 1
+        d.items()
+    #print(d)
+    #return d
+    
     store = []
     for i in range(0, len(words)):
         for n in range(0,len(words)):
@@ -139,7 +134,8 @@ def findSingletonWords(text):
     #remove all zeros
     while 0 in words:
         words.remove(0)
-    return(words)
+    ansSet = set(words)
+    return ansSet
     #raise Exception("Not implemented yet")
     # END_YOUR_CODE
 ############################################################
@@ -253,6 +249,16 @@ def computeLongestPalindromeLength(text):
     first = 0
     last = len(text) -1
     count = 0
-    return (Longest(text,first,last,count))
+    if (len(text)== 0):
+        return 0
+    elif(len(text)==1):
+        return 1
+    else:
+        return (Longest(text,first,last,count))
     
     # END_YOUR_CODE
+v1 = {0:1, 4:3, 7:2, 10:1}
+v2 = {0:0, 2:1,7:3, 9:1}
+looking = sparseVectorDotProduct(v1,v2)
+print(looking)
+
