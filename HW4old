@@ -8,6 +8,7 @@ import sys
 import os, random, operator, sys
 from collections import Counter
 
+
 ############################################################
 # Problem 3: binary classification
 ############################################################
@@ -23,13 +24,12 @@ def extractWordFeatures(x):
     @return dict: feature vector representation of x.
     Example: "I am what I am" --> {'I': 2, 'am': 2, 'what': 1}
     """
-    
     # BEGIN_YOUR_CODE (our solution is 4 lines of code, but don't worry if you deviate from this)
+    #raise Exception("Not implemented yet")
     xlist = x.split(" ")
     #create a dictionary where for items in list count number of occurances
     FeatureVector = {item: xlist.count(item) for item in xlist}
     return FeatureVector
-    #raise Exception("Not implemented yet")
     # END_YOUR_CODE
 
 ############################################################
@@ -55,6 +55,7 @@ def sgd(weights, feature, label, eta):
         pass
 
     increment(weights, (-1) * eta, gradient)
+    print(weights)
 
 def getPredictor(weights, featureExtractor):
     # A linear -1/1 predictor, the decision boundary is 0.
@@ -70,25 +71,31 @@ def learnPredictor(trainExamples, testExamples, featureExtractor, numIters, eta)
     You should implement stochastic gradient descent.
 
     Note: only use the trainExamples for training!
-    You should call evaluatePredictor() once each epoch on both trainExamples and testExamples
+    You should call evaluatePredictor() on both trainExamples and testExamples
     to see how you're doing as you learn after each iteration.
     '''
     weights = {}  # feature => weight
-    #sgd(weights, feature, label, eta):
-    numUpdates = 0
-    #feature = featureExtractor()
-    #numIters is number of epochs/number of times to train
-    for epoch in range(numIters):
-        #for x, y in trainExamples:
-        x = trainExamples.keys()
-        feature = featureExtractor(x)
-        y = trainExamples.values()
-        label = y
-        sgd(weights, feature, label, eta)
-    #evaluatePredictor(trainExamples,)   
-    
     # BEGIN_YOUR_CODE (our solution is 12 lines of code, but don't worry if you deviate from this)
-    raise Exception("Not implemented yet")
+    #raise Exception("Not implemented yet")
+    #featureExtractor()
+    #dot product w and phi(x)y
+    #get data to 
+    #trainExamples = readExamples('names.train')
+    #y values from util read examples
+    #alues = trainExamples.keys()
+    #Texamples = readExamples(trainExamples)
+    for epoch in range(numIters):
+        #examples = readExamples('polarity.train')
+        for x in trainExamples:
+            values = x[1]
+            feature = featureExtractor(x[0])
+            sgd(weights,feature,values,eta)
+    
+    print(f'epoch {epoch}: w = {weights}, Evaluate predictor trainExamples {evaluatePredictor(trainExamples,learnPredictor)}, Evaluate predictor testExamples{evaluatePredictor(testExamples,learnPredictor)}')
+    #evaluatePredictor(values,learnPredictor)
+    #evaluatePredictor()
+    #x = readExamples('Users\Sierra Moody\EECE395V\programming_materials_HW04\programming_materials_HW04\polarity.train')
+    #phiy = dotProduct(weights,featureExtractor(x))
     # END_YOUR_CODE
     return weights
 
@@ -101,13 +108,30 @@ def generateDataset(numExamples, weights):
     |weights|.
     '''
     random.seed(42)
+    #import numpy
     # Return a single example (phi(x), y).
     # phi(x) should be a dict whose keys are a subset of the keys in weights
     # and values can be anything (randomize!) with a nonzero score under the given weight vector.
     # y should be 1 or -1 as classified by the weight vector.
     def generateExample():
         # BEGIN_YOUR_CODE (our solution is 3 lines of code, but don't worry if you deviate from this)    
-        raise Exception("Not implemented yet")
+        #raise Exception("Not implemented yet")
+        #import numpy
+        phi = {}
+        phicopy = weights
+        #y = []
+        #intlist = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        for x in phicopy:
+            phi[x] = random.randrange(20, 50, 3)
+        #y = weights.values()
+        # y given by classifier
+        dotphiw = dotProduct(phi,weights)
+        if (dotphiw > 0):
+            y= 1
+        elif (dotphiw < 0):
+            y[x] = -1
+        #y = sign(dotphiw)
+        #print(phi,y)
         # END_YOUR_CODE
         return (phi, y)
 
@@ -124,8 +148,21 @@ def extractCharacterFeatures(n):
     You may assume that n >= 1.
     '''
     def extract(x):
+        xnowhite = x.replace(" ", "")
+        ngrams = []
+        extractor = {}
+        for i in range(len(xnowhite)-n+1):
+            count = 0
+            search = 0
+            ngrams = xnowhite[i:(i+n)]
+            while (xnowhite.find(ngrams, search) > -1):
+                search = xnowhite.find(ngrams, search) + 1
+                count = count + 1
+            extractor[ngrams] = count
+        #exist = x.find(ngrams,)
+        return extractor
         # BEGIN_YOUR_CODE (our solution is 6 lines of code, but don't worry if you deviate from this)
-        raise Exception("Not implemented yet")
+        #raise Exception("Not implemented yet")
         # END_YOUR_CODE
     return extract
 
