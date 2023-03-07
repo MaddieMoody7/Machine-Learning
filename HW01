@@ -1,145 +1,3 @@
-import collections
-import math
-############################################################
-# Problem 3a
-def findAlphabeticallyLastWord(text):
-    
-    """
-    Given a string |text|, return the word in |text| that comes last
-    alphabetically (that is, the word that would appear last in a dictionary).
-    A word is defined by a maximal sequence of characters without whitespaces.
-    You might find max() useful.
-    """
-    # BEGIN_YOUR_CODE 
-    words = text.split(' ')
-    words.sort()
-    #print(words)
-    return words[(len(words)-1)]
-
-    # END_YOUR_CODE
-############################################################
-# Problem 3b
-def euclideanDistance(loc1, loc2):
-    """
-    Return the Euclidean distance between two locations, where each location
-    is a pair of numbers (e.g., loc1: (3, 5), loc2: (4,6)).
-    Hint: considering doing the math computation over a list comprehension     
-    """
-    # BEGIN_YOUR_CODE
-
-    a = ((loc1[0]-loc2[0])**2)
-    b = ((loc1[1]-loc2[1])**2)
-    ans = ((a+b)**(0.5))
-    return ans
-    #raise Exception("Not implemented yet")
-    # END_YOUR_CODE
-############################################################
-# Problem 3c
-def sparseVectorDotProduct(v1, v2):
-    """
-    Given two sparse vectors |v1| and |v2|, each represented as 
-    collection.defaultdict(float), return
-    their dot product.
-    You might find it useful to iterate through the dictionary keys.
-    This function will be useful later for linear classifiers.
-    """
-    # BEGIN_YOUR_CODE 
-    #allkeys1 = list(v1.keys())
-    #allkeys2 = list(v2.keys())
-    """
-    maxkeys1 = max(allkeys1)
-    maxkeys2 = max(allkeys2)
-    lastindex = min(maxkeys1,maxkeys2)
-    print("lastindex", lastindex)
-    print("allkeys1",allkeys1)
-    print("allkeys2",allkeys2)
-    """
-    """
-    size = len(v2)-1
-    sum = 0
-    for i in range(0, (size)):
-        print(i)
-        #get all the keys from the dict
-        key1 = allkeys1[i]
-        key2 = allkeys2[i]
-        #if value at same postition then multiply
-        if key1 == key2:
-            value1 = v1.get(key1)
-            value2 = v2.get(key2)
-            #print("v1*v2 ", (value1*value2))
-            sum = sum + (value1*value2)
-    #return sum"""
-    return sum((v1[x]*(v2[x])) for x in v1.keys())
-    #raise Exception("Not implemented yet")
-    # END_YOUR_CODE
-#sparseVectorDotProduct()
-############################################################
-# Problem 3d
-def incrementSparseVector(v1, scale, v2):
-    """
-    Given two sparse vectors |v1| and |v2|, perform v1 += scale * v2.
-    This function will be useful later for linear classifiers.
-    """
-    # BEGIN_YOUR_CODE 
-    allkeys1 = list(v1.keys())
-    allkeys2 = list(v2.keys())
-    size = len(v1)-1
-    for i in range(0, (size+1)):
-        key1 = allkeys1[i]
-        key2 = allkeys2[i]
-        if key1 == key2:
-            value1 = v1.get(key1)
-            value2 = v2.get(key2)
-            #print("i ", i, "v1",value1," v2 ", value2)
-            v1[i] = value1 + (value2*scale)
-        #elif :
-          #  v1[i] = value2 * scale
-    return v1
-    #raise Exception("Not implemented yet")
-    # END_YOUR_CODE
-############################################################
-# Problem 3e
-def findSingletonWords(text):
-
-    
-    """
-    Splits the string |text| by whitespace and returns the set of words that
-    occur exactly once.
-    You might find it useful to use collections.defaultdict(int) to count before 
-    returning the correct set
-    """
-    # BEGIN_YOUR_CODE 
-    from collections import defaultdict
-    words = text.split(' ')
-    words = text.split(' ')
-    s = words
-    d = defaultdict(int)
-    for k in s:
-        d[k] += 1
-        d.items()
-    #print(d)
-    #return d
-    
-    store = []
-    for i in range(0, len(words)):
-        for n in range(0,len(words)):
-        #check if words match and not to themselves
-            if ((words[i] == words[n]) & (i != n)):
-            #store index where this occurs
-                store.append(i)
-
-    for x in range(0,len(store)):
-    #replace all repeated words with 0
-        words[(store[x])] = 0
-    #remove all zeros
-    while 0 in words:
-        words.remove(0)
-    ansSet = set(words)
-    return ansSet
-    #raise Exception("Not implemented yet")
-    # END_YOUR_CODE
-############################################################
-# Problem 3f
 def computeLongestPalindromeLength(text):
     """
     A palindrome is a string that is equal to its reverse (e.g., 'ana').
@@ -150,7 +8,7 @@ def computeLongestPalindromeLength(text):
     You should first define a recurrence before you start coding.
     """
     # BEGIN_YOUR_CODE 
-     
+    print(text)
     def Length(first,last):
             ans = abs(last - first)+1
             return ans
@@ -169,9 +27,6 @@ def computeLongestPalindromeLength(text):
     def repeatLast(word,first,last):
         store = []
         for i in range(first,(last+1)):
-            #print("i",i)
-            #print("word[last]", word[last])
-            #print("word[last", word[i])
             if (word[last] == word[i]):
                 store.append(i)
             else:
@@ -189,33 +44,33 @@ def computeLongestPalindromeLength(text):
                 first = first +1
                 last = last -1
                 count = count +1
-                #print("first", first)
-                #print("last", last)
-                #print("count", count)
+                print("first", first)
+                print("last", last)
+                print("count", count)
                 if (lenWord == 2):
-                    #print("in 2")
+                    print("in 2")
                     if (word[first]== word[last]):
-                        #print("in 2 and ==")
+                        #rint("in 2 and ==")
                         return (2*count)
                     else:
                         return ((2*count)+1)
-                #print("first", first)
-                #print("last", last)
+                    print("first", first)
+                    print("last", last)
                 elif (lenWord==3)&(word[first]==word[last]):
                     return ((2*count)+1)
                 else:
                     lenWord = Length(first,last)
-                    #newWord = word[first:(last+1)]
-                    #print("first", first)
-                    #print("last", last)
-                    #print("above longest")
+                    newWord = word[first:(last+1)]
+                    print("first", first)
+                    print("last", last)
+                    print("above longest")
                     long = Longest(word,first,last,count)
                     return long
             else:
                 #print("else 66")
-                #print("first", first)
-                #print("last", last)
-                #print("count", count)
+                print("first", first)
+                print("last", last)
+                print("count", count)
                 if ((repeatFirst(word,first,last))>0):
                     last = repeatFirst(word,first,last)
                     #first = repeatFirst(word,first,last)
@@ -257,8 +112,3 @@ def computeLongestPalindromeLength(text):
         return (Longest(text,first,last,count))
     
     # END_YOUR_CODE
-v1 = {0:1, 4:3, 7:2, 10:1}
-v2 = {0:0, 2:1,7:3, 9:1}
-looking = sparseVectorDotProduct(v1,v2)
-print(looking)
-
