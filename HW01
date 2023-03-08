@@ -1,114 +1,44 @@
-def computeLongestPalindromeLength(text):
-    """
-    A palindrome is a string that is equal to its reverse (e.g., 'ana').
-    Compute the length of the longest palindrome that can be obtained by deleting
-    letters from |text|.
-    For example: the longest palindrome in 'animal' is 'ama'.
-    Your algorithm should run in O(len(text)^2) time.
-    You should first define a recurrence before you start coding.
-    """
-    # BEGIN_YOUR_CODE 
-    print(text)
-    def Length(first,last):
-            ans = abs(last - first)+1
-            return ans
-
-    def repeatFirst(word,first,last):
-        store = [0]
-        for i in range(first,(last+1)):
-            if (word[first] == word[i]):
-                store.append(i)
-            else:
-                store.append(0)
-        if ((max(store)) == first):
-            return 0
-        else:
-            return(max(store))
-    def repeatLast(word,first,last):
-        store = []
-        for i in range(first,(last+1)):
-            if (word[last] == word[i]):
-                store.append(i)
-            else:
-                store.append((last+2))
-        #print(store)
-        if ((min(store)) == last):
-            return 0
-        else:
-            return(min(store))
-        
-
-    def Longest(word,first,last,count):
-            if (word[first]==word[last]):
-                lenWord = Length(first,last)
-                first = first +1
-                last = last -1
+i = 0
+j = len(text) -1
+count = 0
+def Longest(text,i,j,count):
+            print("enter")
+            print(" text i ", text[i], " text j ", text[j])
+            if (i == j):
                 count = count +1
-                print("first", first)
-                print("last", last)
-                print("count", count)
-                if (lenWord == 2):
-                    print("in 2")
-                    if (word[first]== word[last]):
-                        #rint("in 2 and ==")
-                        return (2*count)
-                    else:
-                        return ((2*count)+1)
-                    print("first", first)
-                    print("last", last)
-                elif (lenWord==3)&(word[first]==word[last]):
-                    return ((2*count)+1)
-                else:
-                    lenWord = Length(first,last)
-                    newWord = word[first:(last+1)]
-                    print("first", first)
-                    print("last", last)
-                    print("above longest")
-                    long = Longest(word,first,last,count)
-                    return long
+                print("146", count)
+                return count
+            elif (i > j):
+                count = count + 1
+                print("150", count)
+                return count
+            elif (text[i]== text[j]):
+                count = count + 2
+                i = i+1
+                j = j-1
+                print("155", i, j, count)
+                long = Longest(text, i, j, count)
+                return long
+                
+            elif ((text[i]== text[j-1])&(i != (j-1))):
+                count = count +2
+                i = i+1
+                j = j-2
+                print("161", i, j, count)
+                long = Longest(text, i, j, count)
+                return long
+            elif ((text[i+1]== text[j])&((i+1) != j)):
+                count = count +2
+                i = i+2
+                j = j-1
+                print("167", i, j, count)
+                long=Longest(text, i, j, count)
+                return long
             else:
-                #print("else 66")
-                print("first", first)
-                print("last", last)
-                print("count", count)
-                if ((repeatFirst(word,first,last))>0):
-                    last = repeatFirst(word,first,last)
-                    #first = repeatFirst(word,first,last)
-                    #print("count 65",count)
-                    #print("repeatFirst", "w ", word," f ", first, " l ",last)
-                    long = Longest(word,first,last,count)
-                    return long
-                elif((repeatLast(word,first,last))>0):
-                    #print("repeatLast", "w ", word," f ", first, " l ",last)
-                    #last = repeatLast(word,first,last)
-                    first = repeatLast(word,first,last)
-                    #print("count",count)
-                    long = Longest(word,first,last,count)
-                    return long
-                else:
-                    #print("in else 77")
-                    #print("f ", first, "l ", last)
-                    first = first +1
-                    last = last -1
-                    lenWord = Length(first,last)
-                    #print("len ", lenWord)
-                    if(lenWord == 1):
-                        return ((2*count)+1)
-                    if (lenWord == 2):
-                        return ((2*count)+1)
-                    elif (lenWord == 3):
-                        return((2*count)+1)
-                    else:
-                        long = Longest(word,first,last,count)
-                        return long
-    first = 0
-    last = len(text) -1
-    count = 0
-    if (len(text)== 0):
-        return 0
-    elif(len(text)==1):
-        return 1
-    else:
-        return (Longest(text,first,last,count))
-    
-    # END_YOUR_CODE
+                print("else")
+                i = i +1
+                j = j-1
+                long = Longest(text, i, j, count)
+                return long
+look = Longest(text,i,j,count)
+print(look)
